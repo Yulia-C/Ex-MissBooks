@@ -1,0 +1,29 @@
+.app-header {
+    background-color: var(--gray1);
+    color: var(--clr1);
+    padding-block: .25em;
+    padding-inline: 5vw;
+}
+
+.app-header section:first-child {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.app-header h1{
+  font-size: 40px;
+}
+
+
+.app-header .app-nav {
+    display: flex;
+    gap: 15px;
+
+    >a {
+        cursor: pointer;
+    }
+    >a:hover {
+        text-decoration: underline;
+    }
+}
