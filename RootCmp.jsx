@@ -8,7 +8,7 @@ import { Home } from "./pages/Home.jsx"
 
 export function RootCmp() {
 
-    const [page, setPage] = useState('home')
+    const [page, setPage] = useState('book')
 
     return (
         <section className="app">

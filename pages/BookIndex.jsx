@@ -1,10 +1,10 @@
 import { bookService } from "../services/book.service.js";
 import { BookList } from "../cpms/BookList.jsx";
 
-const {useState, useEffect} = React
+const { useState, useEffect } = React
 
 export function BookIndex() {
-    const [books, setBooks] = useState(null)
+    const [books, setBooks] = useState()
 
     useEffect(() => {
         loadBooks()
@@ -15,10 +15,24 @@ export function BookIndex() {
             .then(books => setBooks(books))
             .catch(err => console.log('err:', err))
     }
+
+    function onRemoveBook(bookId) {
+        console.log('removing..')
+    }
+
+    function onSelectBookId(bokId) {
+        console.log('selecting...');
+
+    }
+
+    if (!books) return <div>Loading...</div>
+
     return (
         <section className="book-index container">
             <h1>Book Index</h1>
-            <BookList books={books} />
+            <BookList books={books}
+                onRemoveBook={onRemoveBook}
+                onSelectBookId={onSelectBookId} />
         </section>
     )
 
