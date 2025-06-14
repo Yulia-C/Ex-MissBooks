@@ -1,8 +1,9 @@
 import { makeId, saveToStorage, loadFromStorage, getRandomIntInclusive, makeLorem } from "./util.service.js"
-
+import { storageService } from "./async-storage.service.js"
 const BOOKS_KEY = 'booksDB'
-const gBooks = loadFromStorage(BOOKS_KEY) || _createBooks()
-_createDemoBooks()
+const gBooks = loadFromStorage(BOOKS_KEY) || _createDemoBooks()
+// _createBooks()
+// _createDemoBooks()
 
 export const bookService = {
     query,
@@ -75,7 +76,7 @@ function _createBooks() {
 
 
 function _createDemoBooks() {
-    return [{
+    const books = [{
         id: 'b101',
         title: 'The Lost Symbol',
         listPrice: {
@@ -102,4 +103,7 @@ function _createDemoBooks() {
             isOnSale: Math.random() > 0.7
         }
     }]
+    saveToStorage(BOOKS_KEY, books)
+    console.log('books', books)
+    return books
 }
