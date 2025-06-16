@@ -1,9 +1,9 @@
 import { makeId, saveToStorage, loadFromStorage, getRandomIntInclusive, makeLorem } from "./util.service.js"
 import { storageService } from "./async-storage.service.js"
+
 const BOOKS_KEY = 'booksDB'
-const gBooks = loadFromStorage(BOOKS_KEY) || _createDemoBooks()
-// _createBooks()
-// _createDemoBooks()
+
+_createBooks()
 
 export const bookService = {
     query,
@@ -46,30 +46,34 @@ function save(book) {
 
 function _createBooks() {
     const ctgs = ['Love', 'Fiction', 'Poetry', 'Computers', 'Religion']
-    const books = []
-    for (let i = 0; i < 20; i++) {
-        const book = {
-            id: utilService.makeId(),
-            title: utilService.makeLorem(2),
-            subtitle: utilService.makeLorem(4),
-            authors: [
-                utilService.makeLorem(1)
-            ],
-            publishedDate: utilService.getRandomIntInclusive(1950, 2024),
-            description: utilService.makeLorem(20),
-            pageCount: utilService.getRandomIntInclusive(20, 600),
-            categories: [ctgs[utilService.getRandomIntInclusive(0, ctgs.length - 1)]],
-            thumbnail: `http://coding-academy.org/books-photos/${i + 1}.jpg`,
-            language: "en",
-            listPrice: {
-                amount: utilService.getRandomIntInclusive(80, 500),
-                currencyCode: "EUR",
-                isOnSale: Math.random() > 0.7
+    let books = loadFromStorage(BOOKS_KEY)
+
+    if (!books || !books.length) {
+
+        books = []
+        for (let i = 0; i < 20; i++) {
+            const book = {
+                id: utilService.makeId(),
+                title: utilService.makeLorem(2),
+                subtitle: utilService.makeLorem(4),
+                authors: [
+                    utilService.makeLorem(1)
+                ],
+                publishedDate: utilService.getRandomIntInclusive(1950, 2024),
+                description: utilService.makeLorem(20),
+                pageCount: utilService.getRandomIntInclusive(20, 600),
+                categories: [ctgs[utilService.getRandomIntInclusive(0, ctgs.length - 1)]],
+                thumbnail: `assets/img/${i + 1}.jpg`,
+                language: "en",
+                listPrice: {
+                    amount: utilService.getRandomIntInclusive(80, 500),
+                    currencyCode: "EUR",
+                    isOnSale: Math.random() > 0.7
+                }
             }
+            books.push(book)
         }
-        books.push(book)
         saveToStorage(BOOKS_KEY, books)
-        return books
     }
     console.log('books', books)
 }
