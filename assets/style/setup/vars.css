@@ -2,12 +2,12 @@
     --clr1: rgb(144, 203, 245);
     --clr2: rgb(111, 84, 111);
 
-    --clr1bg: rgb(245, 246, 247);
+    --clr1bg: rgb(242, 243, 244);
     --clr1bg-light: rgb(227, 243, 255);
     --clr2bg: rgb(233, 206, 221);
     --clr2bg-light: rgb(253, 236, 246);
 
-    --gray1: #f6f6f6;
+    --gray1: #f3efef;
     --gray2: #d4d4d4;
     --gray3: #636363;
 }
