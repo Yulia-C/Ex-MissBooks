@@ -6,11 +6,10 @@
     align-items: center;
 }
 
-.book-preview h4 {
+.book-preview h2 {
     text-transform: capitalize;
-    color: black;
 }
 
 .book-preview img {
-    max-width: 100px;
+    width: 100%;
 }
