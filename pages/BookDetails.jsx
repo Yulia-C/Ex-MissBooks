@@ -1,5 +1,6 @@
 import { bookService } from "../services/book.service.js";
 import { BookPreview } from "./BookPreview.jsx";
+import { LongTxt } from "../cpms/LongTxt.jsx";
 
 const { useState, useEffect } = React
 
@@ -56,7 +57,7 @@ export function BookDetails({ bookId, onBack }) {
                 </h3>
                 <h4>Published Date: {getPublishedDateDiff(book.publishedDate)}</h4>
                 <h4>Book description:</h4>
-                <p>{book.description}</p>
+                < LongTxt txt = {book.description}/>
                 <p>Page count: {getPageCount(book.pageCount)}</p>
                 <button onClick={onBack}>Back</button>
             </section>

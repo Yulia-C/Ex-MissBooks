@@ -1,0 +1,4 @@
+ .long-txt  span{
+    cursor:pointer;
+    color: var(--clr1);
+}
