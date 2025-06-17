@@ -1,18 +1,52 @@
 .book-details {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: minmax(300px, 1fr) 2fr;
+    gap: 3em;
+    justify-content: start;
+    align-items: start;
+    padding-block: 5vh;
 }
+
+@media (max-width: 800px) {
+    .book-details {
+        grid-template-columns: 1fr;
+    }
+}
+
 .book-details h1 {
     color: var(--clr1);
     font-size: 2em;
     
 }
+
 .book-details h5 {
     color: var(--clr2);
 }
+
 .book-details img {
-    max-width: 200px;
+    width: 100%;
     display: block;
     margin: auto;
+}
+
+.book-info {
+    position: relative;
+    padding-top: 2.8em;
+}
+
+h3 span {
+    &.red {
+        color: red;
+    }
+
+    &.green {
+        color: rgb(32, 236, 32);
+    }
+}
+
+img.sale {
+    position: absolute;
+    top: 1rem;
+    right: 2rem;
+    width: 100px;
 }
