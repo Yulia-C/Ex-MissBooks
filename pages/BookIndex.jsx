@@ -1,9 +1,10 @@
 import { bookService } from "../services/book.service.js";
-import { BookList } from "../cpms/BookList.jsx";
+import { BookList } from "../cmps/BookList.jsx";
+import { BookFilter } from "../cmps/BookFilter.jsx";
 import { BookDetails } from "./BookDetails.jsx";
-import { BookFilter } from "../cpms/BookFilter.jsx";
 
 const { useState, useEffect, Fragment } = React
+const {Link } = ReactRouterDOM
 
 export function BookIndex() {
     const [books, setBooks] = useState(null)
@@ -44,7 +45,7 @@ export function BookIndex() {
             {selectedBookId &&
                 <BookDetails
                     bookId={selectedBookId}
-                    onBack={() => setSelectedBookId(null)}
+                    onBack={onBack}
                 />}
 
             {!selectedBookId &&
@@ -54,6 +55,11 @@ export function BookIndex() {
                         defaultFilter={filterBy}
                         onSetFilter={onSetFilter}
                     />
+                    <section>
+                        <Link to="/">
+                        <button>Add a book</button>
+                        </Link>
+                    </section>
                     <BookList books={books}
                         onRemoveBook={onRemoveBook}
                         onSelectBookId={onSelectBookId} />

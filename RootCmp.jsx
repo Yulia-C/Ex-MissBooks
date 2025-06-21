@@ -1,24 +1,38 @@
-const { useState } = React
+import { AppHeader } from "./cmps/AppHeader.jsx";
+import { BookIndex } from "./pages/BookIndex.jsx";
+import { NotFound } from "./cmps/NotFount.jsx";
+import { About } from "./pages/About.jsx";
+import { Home } from "./pages/Home.jsx";
+import { BookDetails } from "./pages/BookDetails.jsx";
+import { Team } from "./cmps/Team.jsx";
+import { Vision } from "./cmps/Vision.jsx";
 
-import { AppHeader } from "./cpms/AppHeader.jsx"
-import { BookIndex } from "./pages/BookIndex.jsx"
-import { About } from "./pages/About.jsx"
-import { Home } from "./pages/Home.jsx"
-
+const Router = ReactRouterDOM.HashRouter
+const { Routes, Route, Navigate } = ReactRouterDOM
 
 export function RootCmp() {
-
-    const [page, setPage] = useState('book')
-
     return (
-        <section className="app">
-            <AppHeader onSetPage={(page) => setPage(page)} />
+        <Router>
+            <section className="app">
+                <AppHeader />
 
-            <main>
-                {page === 'home' && <Home />}
-                {page === 'about' && <About />}
-                {page === 'book' && <BookIndex />}
-            </main>
-        </section>
+                <main>
+                    <Routes>
+                        <Route path="/" element={<Navigate to="/home" />} />
+                        <Route path="/home" element={<Home />} />
+                        <Route path="/about" element={<About />} >
+                            <Route path="team" element={<Team />} />
+                            <Route path="vision" element={<Vision />} />
+                        </Route>
+
+                        <Route path="/book" element={<BookIndex />} />
+                        <Route path="/book/:bookId" element={<BookDetails />} />
+                     
+                        <Route path="*" element={<NotFound />} />
+
+                    </Routes>
+                </main>
+            </section>
+        </Router>
     )
-} 
+}
