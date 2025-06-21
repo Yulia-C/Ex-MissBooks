@@ -50,7 +50,7 @@ export function BookFilter({ defaultFilter, onSetFilter }) {
             </form>
             <section className="categories">
                 <h4>Book categories:</h4>
-                <ul>
+                <ul className="clean-list">
                     {categories && categories.map(category =>
                         <li onClick={() => {
                             const target = {
