@@ -1,20 +1,25 @@
 import { bookService } from "../services/book.service.js";
-import { BookPreview } from "../cpms/BookPreview.jsx";
-import { LongTxt } from "../cpms/LongTxt.jsx";
+import { BookPreview } from "../cmps/BookPreview.jsx";
+import { LongTxt } from "../cmps/LongTxt.jsx";
 
 const { useState, useEffect } = React
+
+const { useParams, useNavigate, Link } = ReactRouterDOM
 
 export function BookDetails({ bookId, onBack }) {
 
     const [book, setBook] = useState(null)
+    const params = useParams()
+    const navigate = useNavigate()
+
 
 
     useEffect(() => {
         loadBook()
-    }, [])
+    }, [params.bookId])
 
     function loadBook() {
-        bookService.get(bookId)
+        bookService.get(params.bookId)
             .then(setBook)
             .catch(err => {
                 console.log('err:', err)
@@ -45,6 +50,10 @@ export function BookDetails({ bookId, onBack }) {
         else return publishedDate
     }
 
+    function onBack() {
+        navigate('/book')
+    }
+
     if (!book) return <div className="loader"></div>
 
     return (
@@ -57,9 +66,19 @@ export function BookDetails({ bookId, onBack }) {
                 </h3>
                 <h4>Published Date: {getPublishedDateDiff(book.publishedDate)}</h4>
                 <h4>Book description:</h4>
-                < LongTxt txt = {book.description}/>
+                < LongTxt txt={book.description} />
                 <p>Page count: {getPageCount(book.pageCount)}</p>
+
                 <button onClick={onBack}>Back</button>
+            </section>
+            
+            <section className="prev-next">
+                <Link to={`/book/${book.prevBookId}`}>
+                    <button>Previous Book</button>
+                </Link>
+                <Link to={`/book/${book.nextBookId}`}>
+                    <button>Next Book</button>
+                </Link>
             </section>
 
         </section>
