@@ -9,7 +9,9 @@ export const bookService = {
     query,
     get,
     save,
-    remove
+    remove,
+    getDefaultFilter,
+    getCategories,
 }
 
 function query(filterBy = {}) {
@@ -17,10 +19,16 @@ function query(filterBy = {}) {
         .then(books => {
             if (filterBy.txt) {
                 const regExp = new RegExp(filterBy.txt, 'i')
-                books = books.filter(book => regExp.test(book.title) || regExp.test(book.subtitle) || regExp.test(book.authors.join(' ')))
+                books = books.filter(book =>
+                    regExp.test(book.title)
+                    || regExp.test(book.subtitle)
+                    || regExp.test(book.description)
+                    || book.authors.join(' ').includes(filterBy.txt + ' ')
+                    || book.categories.includes(filterBy.txt)
+                )
             }
-            if (filterBy.listPrice) {
-                books = books.filter(book => book.listPrice.amount >= filterBy.listPrice.amount)
+            if (filterBy.minPrice) {
+                books = books.filter(book => book.listPrice.amount >= filterBy.minPrice)
             }
             return books
         })
@@ -43,6 +51,12 @@ function save(book) {
     }
 }
 
+function getDefaultFilter() {
+    return {
+        txt: '',
+        listPrice: ''
+    }
+}
 
 function _createBooks() {
     const ctgs = ['Love', 'Fiction', 'Poetry', 'Computers', 'Religion']
@@ -78,36 +92,9 @@ function _createBooks() {
     console.log('books', books)
 }
 
-
-function _createDemoBooks() {
-    const books = [{
-        id: 'b101',
-        title: 'The Lost Symbol',
-        listPrice: {
-            amount: utilService.getRandomIntInclusive(80, 500),
-            currencyCode: "EUR",
-            isOnSale: Math.random() > 0.7
-        }
-    },
-    {
-        id: 'b100',
-        title: 'The Great Gatsby',
-        listPrice: {
-            amount: utilService.getRandomIntInclusive(80, 500),
-            currencyCode: "EUR",
-            isOnSale: Math.random() > 0.7
-        }
-    },
-    {
-        id: 'b102',
-        title: 'The Catcher in the Rye',
-        listPrice: {
-            amount: utilService.getRandomIntInclusive(80, 500),
-            currencyCode: "EUR",
-            isOnSale: Math.random() > 0.7
-        }
-    }]
-    saveToStorage(BOOKS_KEY, books)
-    console.log('books', books)
-    return books
+function getCategories() {
+    return storageService.query(BOOKS_KEY)
+        .then(books => {
+            return [...new Set(books.flatMap(book => book.categories))]
+        })
 }

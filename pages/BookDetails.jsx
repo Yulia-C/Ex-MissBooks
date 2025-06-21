@@ -1,5 +1,5 @@
 import { bookService } from "../services/book.service.js";
-import { BookPreview } from "./BookPreview.jsx";
+import { BookPreview } from "../cpms/BookPreview.jsx";
 import { LongTxt } from "../cpms/LongTxt.jsx";
 
 const { useState, useEffect } = React
