@@ -58,9 +58,17 @@ a {
     text-decoration: none;
     font-family: "Lato", sans-serif;
     color: inherit;
+    font-style: italic;
+}
+
+label {
+    font-family: "Lato", sans-serif;
+    font-style: italic;
 }
 
 li {
+    font-family: "Lato", sans-serif;
+    font-style: italic;
     list-style-type: none;
     margin: 0;
     padding: 0;
