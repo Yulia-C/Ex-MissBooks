@@ -1,6 +1,7 @@
 import { bookService } from "../services/book.service.js";
 import { BookPreview } from "../cmps/BookPreview.jsx";
 import { LongTxt } from "../cmps/LongTxt.jsx";
+import { AddReview } from "../cmps/AddReview.jsx";
 
 const { useState, useEffect } = React
 
@@ -54,6 +55,16 @@ export function BookDetails({ bookId, onBack }) {
         navigate('/book')
     }
 
+    const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
+
+    useEffect(() => {
+        loadBook()
+    }, [isReviewModalOpen])
+    
+    function toggleReviewModal() {
+        setIsReviewModalOpen(prev => !prev)
+    }
+
     if (!book) return <div className="loader"></div>
 
     return (
@@ -69,18 +80,43 @@ export function BookDetails({ bookId, onBack }) {
                 < LongTxt txt={book.description} />
                 <p>Page count: {getPageCount(book.pageCount)}</p>
 
-                <button onClick={onBack}>Back</button>
             </section>
-            
-            <section className="prev-next">
-                <Link to={`/book/${book.prevBookId}`}>
-                    <button>Previous Book</button>
-                </Link>
-                <Link to={`/book/${book.nextBookId}`}>
-                    <button>Next Book</button>
-                </Link>
+            <section className="btns">
+                <button onClick={onBack}>Back</button>
+                <section className="prev-next">
+                    <Link to={`/book/${book.prevBookId}`}>
+                        <button>Previous Book</button>
+                    </Link>
+                    <Link to={`/book/${book.nextBookId}`}>
+                        <button>Next Book</button>
+                    </Link>
+                </section>
             </section>
 
+            <section className="reviews">
+                <button onClick={toggleReviewModal}>Add a review</button>
+                <h2>Reviews</h2>
+                {book.reviews && book.reviews.length > 0 ? (
+                    <ul>
+                        {book.reviews.map((review, idx) => (
+                            <li key={idx} className="review">
+                                <h4>Name: {review.fullname}</h4>
+                                <p>Date: {new Date(review.createdAt).toLocaleDateString()}</p>
+                                <p>Rating: {'⭐'.repeat(review.rating)}</p>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>No reviews yet. Be the first to add one!</p>
+                )}
+            </section>
+
+            {isReviewModalOpen && (
+                    <div className="review-modal" onClick={(ev) => ev.stopPropagation()}>
+                        <button className="close-btn" onClick={toggleReviewModal}>×</button>
+                        <AddReview onClose={toggleReviewModal} />
+                </div>
+            )}
         </section>
     )
 }

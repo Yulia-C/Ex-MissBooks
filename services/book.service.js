@@ -13,6 +13,7 @@ export const bookService = {
     getDefaultFilter,
     getCategories,
     getEmptyBook,
+    addBookReview,
 }
 
 function query(filterBy = {}) {
@@ -60,7 +61,7 @@ function getDefaultFilter() {
     }
 }
 
-function getEmptyBook(id){
+function getEmptyBook(id) {
     const book = {
         id,
         title: '',
@@ -78,6 +79,21 @@ function getEmptyBook(id){
         },
     }
     return book
+}
+
+function addBookReview(bookId, review) {
+    return get(bookId).then(book => {
+
+        if (!book.reviews) book.reviews = []
+        const reviewToAdd = {
+            fullname: review.fullname,
+            rating: review.rating,
+            createdAt: review.createdAt || Date.now(),
+        
+        }
+        book.reviews.push(reviewToAdd)
+        return save(book)
+    })
 }
 
 function _createBooks() {
@@ -105,7 +121,8 @@ function _createBooks() {
                     amount: utilService.getRandomIntInclusive(80, 500),
                     currencyCode: "EUR",
                     isOnSale: Math.random() > 0.7
-                }
+                },
+                reviews: [],
             }
             books.push(book)
         }

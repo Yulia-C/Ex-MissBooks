@@ -15,8 +15,8 @@ export function UserMsg() {
             closeMsg()
         }, 2000)
         return () => unsubscribe()
-
-    }, [])
+    }
+        , [msg])
 
     function closeMsg() {
         setMsg(null)

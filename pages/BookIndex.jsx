@@ -27,9 +27,9 @@ export function BookIndex() {
             .then(() => {
                 showSuccessMsg('Book removed successfully!')
                 setBooks(books => books.filter(book => book.id !== bookId))
-                    .catch(err => { console.log( err) 
-                        showErrorMsg(`Problem removing book`)
-                    })
+            })
+            .catch(err => { console.log( err) 
+                showErrorMsg(`Problem removing book`)
             })
     }
 
