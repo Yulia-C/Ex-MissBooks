@@ -56,7 +56,7 @@ export function BookIndex() {
                         onSetFilter={onSetFilter}
                     />
                     <section>
-                        <Link to="/">
+                        <Link to="/book/edit">
                         <button>Add a book</button>
                         </Link>
                     </section>

@@ -18,7 +18,6 @@ export function BookFilter({ defaultFilter, onSetFilter }) {
     function loadCategories() {
         bookService.getCategories()
             .then(categories => {
-                console.log('categories:', categories)
                 setCategories(categories)
 
             })

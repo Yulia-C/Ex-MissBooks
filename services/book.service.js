@@ -12,6 +12,7 @@ export const bookService = {
     remove,
     getDefaultFilter,
     getCategories,
+    getEmptyBook,
 }
 
 function query(filterBy = {}) {
@@ -36,7 +37,7 @@ function query(filterBy = {}) {
 
 function get(bookId) {
     return storageService.get(BOOKS_KEY, bookId)
-    .then(_setNextPrevBookId)
+        .then(_setNextPrevBookId)
 }
 
 function remove(bookId) {
@@ -57,6 +58,26 @@ function getDefaultFilter() {
         txt: '',
         listPrice: ''
     }
+}
+
+function getEmptyBook(id){
+    const book = {
+        id,
+        title: '',
+        subtitle: '',
+        authors: [''],
+        publishedDate: '',
+        description: '',
+        pageCount: 0,
+        thumbnail: '',
+        category: '',
+        listPrice: {
+            amount: '',
+            currencyCode: 'EUR',
+            isOnSale: false
+        },
+    }
+    return book
 }
 
 function _createBooks() {

@@ -18,9 +18,9 @@ export function BookList({ books, onRemoveBook }) {
                         <Link to={`/book/${book.id}`} >
                             <button> Details</button>
                         </Link>
-                        {/* <Link to={`/book/${book.id}`} > */}
+                        <Link to={`/book/edit/${book.id}`} >
                             <button> Edit</button>
-                        {/* </Link> */}
+                        </Link>
                     </section>
 
                 </li>
