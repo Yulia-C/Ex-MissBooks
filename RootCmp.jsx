@@ -7,6 +7,7 @@ import { Home } from "./pages/Home.jsx";
 import { BookDetails } from "./pages/BookDetails.jsx";
 import { Team } from "./cmps/Team.jsx";
 import { Vision } from "./cmps/Vision.jsx";
+import { UserMsg } from "./cmps/UerMsg.jsx";
 
 const Router = ReactRouterDOM.HashRouter
 const { Routes, Route, Navigate } = ReactRouterDOM
@@ -35,6 +36,7 @@ export function RootCmp() {
 
                     </Routes>
                 </main>
+                <UserMsg />
             </section>
         </Router>
     )

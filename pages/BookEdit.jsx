@@ -1,4 +1,5 @@
 import { bookService } from "../services/book.service.js"
+import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 
 const { useState, useEffect } = React
 const { useNavigate, useParams } = ReactRouterDOM
@@ -26,9 +27,13 @@ export function BookEdit() {
 
         bookService.save(bookToEdit)
             .then(() => {
+                showSuccessMsg(`${bookToEdit.title} added successfully!`)
                 navigate('/book')
             })
-            .catch(err => console.log('Cannot Add book:', err))
+            .catch(err => {
+                console.log('Cannot Add book:', err)
+                showErrorMsg(`Had a problem adding ${bookToEdit.title}...`)
+            })
     }
 
     function handleChange({ target }) {
@@ -63,7 +68,7 @@ export function BookEdit() {
     const { title, authors, listPrice } = bookToEdit
     return (
         <section className="book-edit container">
-            {/* <h1>{bookId ? 'Edit' : 'Add'} Book</h1> */}
+            <h1>{bookId ? 'Edit' : 'Add'} Book</h1>
 
             <form onSubmit={onSaveBook}>
                 <label htmlFor="title">Title:</label>
