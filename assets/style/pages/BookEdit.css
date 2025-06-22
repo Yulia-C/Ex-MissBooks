@@ -1,0 +1,17 @@
+.book-edit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+
+    >form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+}
+
+.book-edit form button {
+    justify-self: center;
+    grid-column: span 2;
+}

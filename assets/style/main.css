@@ -13,13 +13,15 @@
 @import "pages/About.css";
 @import "pages/BookDetails.css";
 @import "pages/BookIndex.css";
+@import "pages/BookEdit.css";
 
 
 /* Components */
 @import "cmps/AppHeader.css";
-/* @import "cmps/BookDetails.css"; */
-@import "cmps/BookEdit.css";
 @import "cmps/BookFilter.css";
 @import "cmps/BookList.css";
 @import "cmps/BookPreview.css";
 @import "cmps/LongTxt.css";
+@import "cmps/Team.css";
+@import "cmps/Vision.css";
+@import "cmps/UserMsg.css";

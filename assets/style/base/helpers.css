@@ -19,3 +19,14 @@
 .flex.align-center{
     align-items: center;
 }
+
+/* List Helpers */
+.clean-list{
+    list-style: none;
+}
+
+/* Center Helpers */
+
+.center{
+    text-align: center;
+}

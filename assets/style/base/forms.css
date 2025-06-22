@@ -1,4 +1,6 @@
 button {
+    font-family: "Lato", sans-serif;
+    font-style: italic;
     cursor: pointer;
     background-color: var(--clr2bg);
     margin: 0.5em;

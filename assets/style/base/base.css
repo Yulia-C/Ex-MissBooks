@@ -66,10 +66,15 @@ label {
     font-style: italic;
 }
 
+ul {
+    padding: .5rem;
+
+}
+
 li {
     font-family: "Lato", sans-serif;
     font-style: italic;
-    list-style-type: none;
+    /* list-style-type: none; */
     margin: 0;
     padding: 0;
 }
