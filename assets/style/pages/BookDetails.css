@@ -1,7 +1,7 @@
 .book-details {
     display: grid;
     grid-template-columns: minmax(300px, 1fr) 2fr;
-    grid-template-rows: 3fr 1fr;
+    grid-template-rows: 3fr .5fr;
     gap: 3em;
     justify-content: start;
     align-items: start;

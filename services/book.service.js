@@ -1,7 +1,16 @@
-import { makeId, saveToStorage, loadFromStorage, getRandomIntInclusive, makeLorem } from "./util.service.js"
-import { storageService } from "./async-storage.service.js"
-
+import { makeId, saveToStorage, loadFromStorage, getRandomIntInclusive, makeLorem } from "./util.service.js";
+import { storageService } from "./async-storage.service.js";
+import {txt} from "./googleBooksService.js";
 const BOOKS_KEY = 'booksDB'
+const ctgs = ['Love', 'Fiction', 'Poetry', 'Computers', 'Religion']
+
+const authorsList = [
+    'George Orwell', 'Jane Austen', 'Mark Twain', 'J.K. Rowling',
+    'Ernest Hemingway', 'Virginia Woolf', 'F. Scott Fitzgerald',
+    'Haruki Murakami', 'Stephen King', 'Toni Morrison',
+    'Agatha Christie', 'Leo Tolstoy', 'Gabriel Garcia Marquez',
+    'Isaac Asimov', 'Chinua Achebe', 'Margaret Atwood'
+]
 
 _createBooks()
 
@@ -13,7 +22,8 @@ export const bookService = {
     getDefaultFilter,
     getCategories,
     getEmptyBook,
-    addBookReview,
+    getEmptyReview,
+    removeReview,
 }
 
 function query(filterBy = {}) {
@@ -46,6 +56,16 @@ function remove(bookId) {
     return storageService.remove(BOOKS_KEY, bookId)
 }
 
+function removeReview(bookId, reviewId) {
+    return get(bookId)
+        .then(book => {
+            const reviewIdx = book.reviews.findIndex(review => review.id === reviewId)
+            if (reviewIdx < 0) throw new Error(`Cannot find review with id: ${reviewId}`)
+            book.reviews.splice(reviewIdx, 1)
+            return save(book)
+        })
+}
+
 function save(book) {
     if (book.id) {
         return storageService.put(BOOKS_KEY, book)
@@ -61,45 +81,19 @@ function getDefaultFilter() {
     }
 }
 
-function getEmptyBook(id) {
-    const book = {
-        id,
-        title: '',
-        subtitle: '',
-        authors: [''],
-        publishedDate: '',
-        description: '',
-        pageCount: 0,
-        thumbnail: '',
-        category: '',
-        listPrice: {
-            amount: '',
-            currencyCode: 'EUR',
-            isOnSale: false
-        },
+
+function getEmptyReview() {
+    return {
+        id: makeId(),
+        fullname: '',
+        rating: '',
+        createdAt:'',
     }
-    return book
-}
-
-function addBookReview(bookId, review) {
-    return get(bookId).then(book => {
-
-        if (!book.reviews) book.reviews = []
-        const reviewToAdd = {
-            fullname: review.fullname,
-            rating: review.rating,
-            createdAt: review.createdAt || Date.now(),
-        
-        }
-        book.reviews.push(reviewToAdd)
-        return save(book)
-    })
 }
 
 function _createBooks() {
-    const ctgs = ['Love', 'Fiction', 'Poetry', 'Computers', 'Religion']
     let books = loadFromStorage(BOOKS_KEY)
-
+    
     if (!books || !books.length) {
 
         books = []
@@ -108,9 +102,7 @@ function _createBooks() {
                 id: utilService.makeId(),
                 title: utilService.makeLorem(2),
                 subtitle: utilService.makeLorem(4),
-                authors: [
-                    utilService.makeLorem(1)
-                ],
+                authors: [authorsList[getRandomIntInclusive(0, authorsList.length - 1)]],
                 publishedDate: utilService.getRandomIntInclusive(1950, 2024),
                 description: utilService.makeLorem(100),
                 pageCount: utilService.getRandomIntInclusive(20, 600),
@@ -122,7 +114,6 @@ function _createBooks() {
                     currencyCode: "EUR",
                     isOnSale: Math.random() > 0.7
                 },
-                reviews: [],
             }
             books.push(book)
         }
@@ -133,7 +124,7 @@ function _createBooks() {
 
 function getCategories() {
     return storageService.query(BOOKS_KEY)
-        .then(books => {
+    .then(books => {
             return [...new Set(books.flatMap(book => book.categories))]
         })
 }
@@ -146,5 +137,5 @@ function _setNextPrevBookId(book) {
         book.nextBookId = nextBook.id
         book.prevBookId = prevBook.id
         return book
-    })
+        })
 }

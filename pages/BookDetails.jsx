@@ -2,25 +2,24 @@ import { bookService } from "../services/book.service.js";
 import { BookPreview } from "../cmps/BookPreview.jsx";
 import { LongTxt } from "../cmps/LongTxt.jsx";
 import { AddReview } from "../cmps/AddReview.jsx";
+import { showSuccessMsg, showErrorMsg } from "../services/event-bus.service.js";
 
 const { useState, useEffect } = React
 
 const { useParams, useNavigate, Link } = ReactRouterDOM
 
-export function BookDetails({ bookId, onBack }) {
+export function BookDetails({ onBack }) {
 
     const [book, setBook] = useState(null)
-    const params = useParams()
+    const { bookId } = useParams()
     const navigate = useNavigate()
-
-
 
     useEffect(() => {
         loadBook()
-    }, [params.bookId])
+    }, [bookId])
 
     function loadBook() {
-        bookService.get(params.bookId)
+        bookService.get(bookId)
             .then(setBook)
             .catch(err => {
                 console.log('err:', err)
@@ -55,15 +54,39 @@ export function BookDetails({ bookId, onBack }) {
         navigate('/book')
     }
 
-    const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
+    const [resetForm, setResetForm] = useState(0)
 
-    useEffect(() => {
-        loadBook()
-    }, [isReviewModalOpen])
-    
-    function toggleReviewModal() {
-        setIsReviewModalOpen(prev => !prev)
+    function onAddReview(review) {
+        if (!book.reviews) {
+            book.reviews = [review]
+        } else {
+            book.reviews.push(review)
+        }
+        bookService.save(book)
+            .then((bookReviewed) => {
+                showSuccessMsg('Review added successfully!')
+                setBook(prev => ({ ...prev, bookReviewed }))
+                setResetForm(prev => prev + 1)
+            })
+            .catch(err =>
+                showErrorMsg('Had problem adding review...')
+            )
     }
+
+    function onRemoveReview(bookId, reviewId) {
+        bookService.removeReview(bookId, reviewId)
+            .then(() => {
+                setBook(prevBook => ({
+                    ...prevBook,
+                    reviews: prevBook.reviews.filter(review => review.id !== reviewId)
+                }))
+                showSuccessMsg('Review removed successfully!')
+            })
+            .catch(err =>
+                showErrorMsg('Had problem removing review...')
+            )
+    }
+
 
     if (!book) return <div className="loader"></div>
 
@@ -76,6 +99,7 @@ export function BookDetails({ bookId, onBack }) {
                     <span className={getClassName(book.listPrice.amount)}> {book.listPrice.amount}</span>
                 </h3>
                 <h4>Published Date: {getPublishedDateDiff(book.publishedDate)}</h4>
+                <h4>Book Authors - {book.authors}</h4>
                 <h4>Book description:</h4>
                 < LongTxt txt={book.description} />
                 <p>Page count: {getPageCount(book.pageCount)}</p>
@@ -94,14 +118,22 @@ export function BookDetails({ bookId, onBack }) {
             </section>
 
             <section className="reviews">
-                <button onClick={toggleReviewModal}>Add a review</button>
+                <AddReview onAddReview={onAddReview} resetForm={resetForm} />
+
                 <h2>Reviews</h2>
                 {book.reviews && book.reviews.length > 0 ? (
                     <ul>
                         {book.reviews.map((review, idx) => (
                             <li key={idx} className="review">
-                                <h4>Name: {review.fullname}</h4>
-                                <p>Date: {new Date(review.createdAt).toLocaleDateString()}</p>
+                                <h4>Name: {review.fullname}</h4> <button onClick={() => onRemoveReview(book.id, review.id)}>x</button>
+                                <p>Date: {new Date(review.createdAt).toLocaleDateString('en-US', {
+                                    year: 'numeric',
+                                    month: '2-digit',
+                                    day: '2-digit',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    hour12: false,
+                                })}</p>
                                 <p>Rating: {'⭐'.repeat(review.rating)}</p>
                             </li>
                         ))}
@@ -111,12 +143,6 @@ export function BookDetails({ bookId, onBack }) {
                 )}
             </section>
 
-            {isReviewModalOpen && (
-                    <div className="review-modal" onClick={(ev) => ev.stopPropagation()}>
-                        <button className="close-btn" onClick={toggleReviewModal}>×</button>
-                        <AddReview onClose={toggleReviewModal} />
-                </div>
-            )}
         </section>
     )
 }
