@@ -47,32 +47,25 @@ export function BookIndex() {
     return (
         <section className="book-index container">
 
-            {selectedBookId &&
-                <BookDetails
-                    bookId={selectedBookId}
-                    onBack={onBack}
-                />}
+            <Fragment>
 
-            {!selectedBookId &&
-                <Fragment>
+                <BookFilter
+                    defaultFilter={filterBy}
+                    onSetFilter={onSetFilter} />
+                    
+                <section>
+                    <Link to="/book/edit">
+                        <button>Add a book manually</button>
+                    </Link>
+                    <Link to="/book/gbook">
+                        <button>Add a book from google</button>
+                    </Link>
+                </section>
+                <BookList books={books}
+                    onRemoveBook={onRemoveBook}
+                    onSelectBookId={onSelectBookId} />
+            </Fragment>
 
-                    <BookFilter
-                        defaultFilter={filterBy}
-                        onSetFilter={onSetFilter}
-                    />
-                    <section>
-                        <Link to="/book/edit">
-                            <button>Add a book manually</button>
-                        </Link>
-                        <Link to="/book/gbook">
-                            <button>Add a book from google</button>
-                        </Link>
-                    </section>
-                    <BookList books={books}
-                        onRemoveBook={onRemoveBook}
-                        onSelectBookId={onSelectBookId} />
-                </Fragment>
-            }
         </section>
     )
 

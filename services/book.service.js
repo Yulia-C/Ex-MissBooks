@@ -29,6 +29,7 @@ export const bookService = {
 }
 
 function query(filterBy = {}) {
+    console.log('filterBy:', filterBy)
     return storageService.query(BOOKS_KEY)
         .then(books => {
             if (filterBy.txt) {
@@ -36,9 +37,8 @@ function query(filterBy = {}) {
                 books = books.filter(book =>
                     regExp.test(book.title)
                     || regExp.test(book.subtitle)
-                    || regExp.test(book.description)
-                    || book.authors.join(' ').includes(filterBy.txt + ' ')
-                    || book.categories.includes(filterBy.txt)
+                    || regExp.test(book.authors.join(' '))
+                    || regExp.test(book.category)
                 )
             }
             if (filterBy.minPrice) {
@@ -79,7 +79,7 @@ function save(book) {
 function getDefaultFilter() {
     return {
         txt: '',
-        listPrice: ''
+        minPrice: ''
     }
 }
 
@@ -108,7 +108,7 @@ function _createBooks() {
                 publishedDate: utilService.getRandomIntInclusive(1950, 2024),
                 description: utilService.makeLorem(100),
                 pageCount: utilService.getRandomIntInclusive(20, 600),
-                categories: [ctgs[utilService.getRandomIntInclusive(0, ctgs.length - 1)]],
+                category: [ctgs[utilService.getRandomIntInclusive(0, ctgs.length - 1)]],
                 thumbnail: `assets/img/${i + 1}.jpg`,
                 language: "en",
                 listPrice: {
@@ -127,7 +127,7 @@ function _createBooks() {
 function getCategories() {
     return storageService.query(BOOKS_KEY)
         .then(books => {
-            return [...new Set(books.flatMap(book => book.categories))]
+            return [...new Set(books.flatMap(book => book.category))]
         })
 }
 
@@ -161,20 +161,17 @@ function getEmptyBook() {
     return book
 }
 
-//Clean || googleBooks
 
 function getGoogleBook(googleBook) {
-    const gBook = googleBook.volumeInfo
     return {
-        id: gBook.id ,
-        title: gBook.title || 'Unknown Title',
-        subtitle: gBook.subtitle ||'',
-        authors: gBook.authors ||['Unknown Author'],
-        publishedDate: gBook.publishedDate || 'Unknown Date',
-        description: gBook.description ||  'No description available',
-        pageCount: gBook.pageCount || 0,
-        thumbnail: gBook.imageLinks &&  '',
-        category: gBook.categories || ['Uncategorized'],
+        id: googleBook.id || makeId(),
+        title: googleBook.volumeInfo.title || 'Unknown Title',
+        subtitle: googleBook.volumeInfo.subtitle || '',
+        authors: googleBook.volumeInfo.authors || ['Unknown Author'],
+        publishedDate: googleBook.volumeInfo.publishedDate || 'Unknown Date',
+        description: googleBook.volumeInfo.description || 'No description available',
+        pageCount: googleBook.volumeInfo.pageCount || 0,
+        thumbnail: (googleBook.volumeInfo.imageLinks && googleBook.volumeInfo.imageLinks.thumbnail) || '', category: googleBook.volumeInfo.categories || ['Uncategorized'],
         listPrice: {
             amount: utilService.getRandomIntInclusive(80, 500),
             currencyCode: 'EUR',
@@ -183,25 +180,16 @@ function getGoogleBook(googleBook) {
     }
 }
 
-// const gBooks = getGoogleBooks
 
-// function getMappedGoogleBooks() {
-//     const books = gBooks.items.map(getGoogleBook)
-//     console.log('books:', books)
-//     return Promise.resolve(books)
-
-// }
 
 function getGoogleBooks(searchTerm) {
-    // const data = mockData.items
-    searchTerm = searchTerm || 'java'
-    const url = `https://www.googleapis.com/books/v1/volumes?printType=books&q=effective%20${searchTerm}`
-    return fetch(url)
-        .then(res => res.json())
-        .then(res => res.items)
+    const data = mockData.items
+    // searchTerm = searchTerm || 'java'
+    // const url = `https://www.googleapis.com/books/v1/volumes?printType=books&q=effective%20${searchTerm}`
+    // return fetch(url)
+    //     .then(res => res.json())
+    //     .then(res => res.items)
 
-    // return Promise.resolve(data)
-
-
+    return Promise.resolve(data)
 
 }

@@ -25,7 +25,7 @@ export function RootCmp() {
                         <Route path="/home" element={<Home />} />
                         <Route path="/about" element={<About />} >
                             <Route path="team" element={<Team />} />
-                            <Route path="vision" element={<Vision />} />
+                            <Route path="goal" element={<Vision />} />
                         </Route>
 
                         <Route path="/book" element={<BookIndex />} />

@@ -13,27 +13,28 @@ export function BookFilter({ defaultFilter, onSetFilter }) {
 
     useEffect(() => {
         loadCategories()
-    }, [])
+    }, [categories])
 
     function loadCategories() {
         bookService.getCategories()
             .then(categories => {
                 setCategories(categories)
-
             })
     }
+
     function handleChange({ target }) {
         const field = target.name
         let value = target.value
-        // console.log('field, value:', field,
-        //     value)
         switch (target.type) {
 
             case 'range':
                 value = +value
                 break;
-        }
 
+            case 'checkbox':
+                value = target.checked
+                break
+        }
         setFilterByToEdit(prevFilter => ({ ...prevFilter, [field]: value }))
     }
 
