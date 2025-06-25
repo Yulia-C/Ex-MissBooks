@@ -19,6 +19,11 @@
     padding-bottom: 5px;
     background-color: var(--clr1bg);
     border-radius: 8px;
+    transition: scale .3s ease-in-out;
+}
+
+.book-list li:hover {
+    scale: 1.05;
 }
 
 .book-list li.loading {

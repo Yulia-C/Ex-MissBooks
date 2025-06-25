@@ -1,5 +1,6 @@
 .app-header {
-    background-color: var(--gray1);
+    background-color: var(--clr1bg);
+    border-bottom: 1px solid var(--gray2);
     color: var(--clr1);
     padding-block: .25em;
     padding-inline: 5vw;
@@ -19,7 +20,8 @@
 .app-header .app-nav {
     display: flex;
     gap: 15px;
-
+    font-size: 1.5rem;
+    font-weight: 600;
 }
 
 a {
@@ -28,7 +30,7 @@ a {
 }
 
 a:hover {
-    font-weight: bold;
+    font-weight: bolder;
 }
 
 a.active {

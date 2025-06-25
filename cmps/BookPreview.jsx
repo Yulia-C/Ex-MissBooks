@@ -1,5 +1,4 @@
 export function BookPreview({ book }) {
-    console.log('book:', book)
     const { title, thumbnail } = book
 
     return (

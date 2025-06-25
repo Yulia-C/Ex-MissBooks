@@ -7,7 +7,7 @@ export function BookList({ books, onRemoveBook, onAddBook}) {
     const location = useLocation().pathname
 
     return (
-        <ul className="book-list">
+        <ul className="book-list container">
             {books.map(book =>
                 <li key={book.id}>
                     <BookPreview

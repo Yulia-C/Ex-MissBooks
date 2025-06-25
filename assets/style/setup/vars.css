@@ -1,13 +1,13 @@
 :root {
-    --clr1: rgb(144, 203, 245);
-    --clr2: rgb(139, 163, 181);
+    --clr1: rgb(132, 195, 239);
+    --clr2: rgb(178, 191, 201);
 
-    --clr1bg: rgb(242, 243, 244);
-    --clr1bg-light: rgb(227, 243, 255);
-    --clr2bg: rgb(233, 206, 221);
-    --clr2bg-light: rgb(253, 236, 246);
+    --clr1bg: rgba(242, 243, 244, 0.632);
+    --clr1bg-light: rgba(224, 236, 246, 0.696);
+    --clr2bg: rgb(216, 237, 249);
+    --clr2bg-light: rgb(241, 217, 231);
 
     --gray1: #f3efef;
     --gray2: #d4d4d4;
-    --gray3: #636363;
+    --gray3: #636363e8;
 }

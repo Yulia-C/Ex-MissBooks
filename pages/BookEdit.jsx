@@ -76,11 +76,6 @@ export function BookEdit() {
 
             <form onSubmit={onSaveBook}>
 
-                {/* <BookList /> */}
-                {/* <select onChange={handleChange} value={searchTerm} className="book" name="book" id="book">
-                    <option value="1">⭐</option>
-                </select>   */}
-
                 <label htmlFor="title">Title:</label>
                 <input onChange={handleChange} value={title} type="text" name="title" id="title" />
                 <label htmlFor="authors">Author name:</label>

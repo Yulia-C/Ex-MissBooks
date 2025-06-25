@@ -1,6 +1,5 @@
 import { LongTxt } from "../cmps/LongTxt.jsx"
-// import { Team } from "./cmps /Team.jsx"
-// import { Vision } from "./cmps /Vision.jsx"
+
 
 const { Outlet, Link } = ReactRouterDOM
 
@@ -18,8 +17,8 @@ export function About() {
             <h1>About Miss Books...</h1>
             <LongTxt txt={txt} />
             <nav>
-                <Link to="/about/team" >Team</Link>
-                <Link to="/about/vision" >Vision</Link>
+                <Link to="/about/team" >About Our Team </Link>
+                <Link to="/about/goal" >About Our Goal</Link>
             </nav>
             <section>
                 <Outlet />

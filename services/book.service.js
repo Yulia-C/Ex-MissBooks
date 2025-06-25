@@ -183,12 +183,12 @@ function getGoogleBook(googleBook) {
 
 
 function getGoogleBooks(searchTerm) {
-    const data = mockData.items
-    // searchTerm = searchTerm || 'java'
-    // const url = `https://www.googleapis.com/books/v1/volumes?printType=books&q=effective%20${searchTerm}`
-    // return fetch(url)
-    //     .then(res => res.json())
-    //     .then(res => res.items)
+    // const data = mockData.items
+    searchTerm = searchTerm || 'java'
+    const url = `https://www.googleapis.com/books/v1/volumes?printType=books&q=effective%20${searchTerm}`
+    return fetch(url)
+        .then(res => res.json())
+        .then(res => res.items)
 
     return Promise.resolve(data)
 

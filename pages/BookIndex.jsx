@@ -45,15 +45,15 @@ export function BookIndex() {
     if (!books) return <div className="loader"></div>
 
     return (
-        <section className="book-index container">
+        <section className="book-index">
 
             <Fragment>
 
                 <BookFilter
                     defaultFilter={filterBy}
                     onSetFilter={onSetFilter} />
-                    
-                <section>
+
+                <section className="container">
                     <Link to="/book/edit">
                         <button>Add a book manually</button>
                     </Link>

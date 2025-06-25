@@ -7,6 +7,12 @@ body {
     margin: 0;
     color: var(--gray3);
     font-size: 1.2rem;
+
+    background-image: url(https://images.pexels.com/photos/3616764/pexels-photo-3616764.jpeg);
+    background-position: left top;
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
 }
 
 
