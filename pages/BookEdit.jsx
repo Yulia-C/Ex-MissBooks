@@ -51,6 +51,8 @@ export function BookEdit() {
                 break
         }
 
+
+
         if (field === 'amount') {
             setBookToEdit(prevBook => ({
                 ...prevBook,
@@ -65,21 +67,32 @@ export function BookEdit() {
         setBookToEdit(prevBook => ({ ...prevBook, [field]: value }))
     }
 
-    const { title, authors, listPrice } = bookToEdit
+
+
+    const { title, authors, listPrice, publishedDate, description } = bookToEdit
     return (
         <section className="book-edit container">
             <h1>{bookId ? 'Edit' : 'Add'} Book</h1>
 
             <form onSubmit={onSaveBook}>
+
+                {/* <BookList /> */}
+                {/* <select onChange={handleChange} value={searchTerm} className="book" name="book" id="book">
+                    <option value="1">⭐</option>
+                </select>   */}
+
                 <label htmlFor="title">Title:</label>
                 <input onChange={handleChange} value={title} type="text" name="title" id="title" />
                 <label htmlFor="authors">Author name:</label>
                 <input onChange={handleChange} value={authors[0]} type="text" name="author" id="author" />
                 <label htmlFor="amount">Price:</label>
                 <input onChange={handleChange} value={listPrice.amount || ''} type="number" name="amount" id="amount" />
-
+                <label htmlFor="authors">Published Year:</label>
+                <input onChange={handleChange} value={publishedDate} type="number" name="publishedDate" id="publishedDate" />
+                <label htmlFor="amount">Description:</label>
+                <input onChange={handleChange} value={description} type="text" name="description" id="description" />
                 <button>Save</button>
             </form>
 
-        </section>)
+        </section >)
 }

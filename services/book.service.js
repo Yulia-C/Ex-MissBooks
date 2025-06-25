@@ -1,6 +1,6 @@
 import { makeId, saveToStorage, loadFromStorage, getRandomIntInclusive, makeLorem } from "./util.service.js";
 import { storageService } from "./async-storage.service.js";
-import {txt} from "./googleBooksService.js";
+import { mockData } from "./mock-googleBooksService.js";
 const BOOKS_KEY = 'booksDB'
 const ctgs = ['Love', 'Fiction', 'Poetry', 'Computers', 'Religion']
 
@@ -24,6 +24,8 @@ export const bookService = {
     getEmptyBook,
     getEmptyReview,
     removeReview,
+    getGoogleBooks,
+    getGoogleBook,
 }
 
 function query(filterBy = {}) {
@@ -87,13 +89,13 @@ function getEmptyReview() {
         id: makeId(),
         fullname: '',
         rating: '',
-        createdAt:'',
+        createdAt: '',
     }
 }
 
 function _createBooks() {
     let books = loadFromStorage(BOOKS_KEY)
-    
+
     if (!books || !books.length) {
 
         books = []
@@ -124,7 +126,7 @@ function _createBooks() {
 
 function getCategories() {
     return storageService.query(BOOKS_KEY)
-    .then(books => {
+        .then(books => {
             return [...new Set(books.flatMap(book => book.categories))]
         })
 }
@@ -137,5 +139,69 @@ function _setNextPrevBookId(book) {
         book.nextBookId = nextBook.id
         book.prevBookId = prevBook.id
         return book
-        })
+    })
+}
+
+function getEmptyBook() {
+    const book = {
+        title: '',
+        subtitle: utilService.makeLorem(4),
+        authors: [''],
+        publishedDate: '',
+        description: '',
+        pageCount: utilService.getRandomIntInclusive(20, 600),
+        thumbnail: `assets/img/${1}.jpg`,
+        category: ctgs[getRandomIntInclusive(0, ctgs.length - 1)],
+        listPrice: {
+            amount: '',
+            currencyCode: 'EUR',
+            isOnSale: Math.random() > 0.7
+        },
+    }
+    return book
+}
+
+//Clean || googleBooks
+
+function getGoogleBook(googleBook) {
+    const gBook = googleBook.volumeInfo
+    return {
+        id: gBook.id ,
+        title: gBook.title || 'Unknown Title',
+        subtitle: gBook.subtitle ||'',
+        authors: gBook.authors ||['Unknown Author'],
+        publishedDate: gBook.publishedDate || 'Unknown Date',
+        description: gBook.description ||  'No description available',
+        pageCount: gBook.pageCount || 0,
+        thumbnail: gBook.imageLinks &&  '',
+        category: gBook.categories || ['Uncategorized'],
+        listPrice: {
+            amount: utilService.getRandomIntInclusive(80, 500),
+            currencyCode: 'EUR',
+            isOnSale: Math.random() > 0.7
+        }
+    }
+}
+
+// const gBooks = getGoogleBooks
+
+// function getMappedGoogleBooks() {
+//     const books = gBooks.items.map(getGoogleBook)
+//     console.log('books:', books)
+//     return Promise.resolve(books)
+
+// }
+
+function getGoogleBooks(searchTerm) {
+    // const data = mockData.items
+    searchTerm = searchTerm || 'java'
+    const url = `https://www.googleapis.com/books/v1/volumes?printType=books&q=effective%20${searchTerm}`
+    return fetch(url)
+        .then(res => res.json())
+        .then(res => res.items)
+
+    // return Promise.resolve(data)
+
+
+
 }

@@ -5,7 +5,7 @@ import { BookDetails } from "./BookDetails.jsx";
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js";
 
 const { useState, useEffect, Fragment } = React
-const {Link } = ReactRouterDOM
+const { Link } = ReactRouterDOM
 
 export function BookIndex() {
     const [books, setBooks] = useState(null)
@@ -28,13 +28,14 @@ export function BookIndex() {
                 showSuccessMsg('Book removed successfully!')
                 setBooks(books => books.filter(book => book.id !== bookId))
             })
-            .catch(err => { console.log( err) 
+            .catch(err => {
+                console.log(err)
                 showErrorMsg(`Problem removing book`)
             })
     }
 
     function onSetFilter(filterBy) {
-        setFilterBy(prevFilter => ({...prevFilter, ...filterBy}))
+        setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy }))
     }
 
     function onSelectBookId(bookId) {
@@ -61,7 +62,10 @@ export function BookIndex() {
                     />
                     <section>
                         <Link to="/book/edit">
-                        <button>Add a book</button>
+                            <button>Add a book manually</button>
+                        </Link>
+                        <Link to="/book/gbook">
+                            <button>Add a book from google</button>
                         </Link>
                     </section>
                     <BookList books={books}
