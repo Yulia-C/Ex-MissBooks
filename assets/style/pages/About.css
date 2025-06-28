@@ -9,3 +9,9 @@
     gap: 10px;
 }
 
+.active {
+    font-weight: bold;
+    scale: 1.1;
+    color: var(--grey3);
+
+}

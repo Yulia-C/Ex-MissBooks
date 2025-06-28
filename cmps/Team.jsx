@@ -1,7 +1,7 @@
 
 export function Team() {
     return (
-        <section>
+        <section >
             <h2>Our Team</h2>
             <p>
                 We're a passionate group of book lovers—readers, writers, editors,
@@ -10,7 +10,7 @@ export function Team() {
                 Whether it's recommending your next favorite read or creating a space for meaningful discussion,
                 we're here to celebrate the magic of books with you.
             </p>
-            <ul className="team">
+            <ul>
                 <li>Popo Decaprio </li>
                 <li>Jini Baba</li>
             </ul>

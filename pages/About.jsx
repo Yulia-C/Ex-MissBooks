@@ -1,7 +1,7 @@
 import { LongTxt } from "../cmps/LongTxt.jsx"
 
 
-const { Outlet, Link } = ReactRouterDOM
+const { Outlet, Link, NavLink } = ReactRouterDOM
 
 export function About() {
     const txt = `The sky burn a different story 
@@ -17,8 +17,8 @@ export function About() {
             <h1>About Miss Books...</h1>
             <LongTxt txt={txt} />
             <nav>
-                <Link to="/about/team" >About Our Team </Link>
-                <Link to="/about/goal" >About Our Goal</Link>
+                <NavLink className="team" to="/about/team" >About Our Team </NavLink>
+                <NavLink className="goal" to="/about/goal" >About Our Goal</NavLink>
             </nav>
             <section>
                 <Outlet />
