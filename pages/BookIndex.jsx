@@ -1,19 +1,22 @@
 import { bookService } from "../services/book.service.js";
+import { getTruthyValues } from "../services/util.service.js";
 import { BookList } from "../cmps/BookList.jsx";
 import { BookFilter } from "../cmps/BookFilter.jsx";
 import { BookDetails } from "./BookDetails.jsx";
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js";
 
 const { useState, useEffect, Fragment } = React
-const { Link } = ReactRouterDOM
+const { Link, useSearchParams } = ReactRouterDOM
 
 export function BookIndex() {
     const [books, setBooks] = useState(null)
-    const [selectedBookId, setSelectedBookId] = useState(null)
-    const [filterBy, setFilterBy] = useState(bookService.getDefaultFilter())
+    const [searchParams, setSearchParams] = useSearchParams()
+    const [filterBy, setFilterBy] = useState(bookService.getFilterFromSearchParams(searchParams))
+    const truthyFilter = getTruthyValues(filterBy)
 
     useEffect(() => {
         loadBooks()
+        setSearchParams(truthyFilter)
     }, [filterBy])
 
     function loadBooks() {
@@ -34,7 +37,7 @@ export function BookIndex() {
             })
     }
 
-    function onSetFilter(filterBy) {
+    function onSetFilterBy(filterBy) {
         setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy }))
     }
 
@@ -51,7 +54,7 @@ export function BookIndex() {
 
                 <BookFilter
                     defaultFilter={filterBy}
-                    onSetFilter={onSetFilter} />
+                    onSetFilterBy={onSetFilterBy} />
 
                 <section className="container">
                     <Link to="/book/edit">

@@ -8,7 +8,7 @@ import { BookDetails } from "./pages/BookDetails.jsx";
 import { Team } from "./cmps/Team.jsx";
 import { Vision } from "./cmps/Vision.jsx";
 import { UserMsg } from "./cmps/UerMsg.jsx";
-import {GBookAdd, GBookAss} from "./pages/GBookAdd.jsx";
+import { GBookAdd, GBookAss } from "./pages/GBookAdd.jsx";
 
 const Router = ReactRouterDOM.HashRouter
 const { Routes, Route, Navigate } = ReactRouterDOM

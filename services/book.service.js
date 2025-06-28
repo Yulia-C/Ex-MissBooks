@@ -1,4 +1,4 @@
-import { makeId, saveToStorage, loadFromStorage, getRandomIntInclusive, makeLorem } from "./util.service.js";
+import { makeId, saveToStorage, loadFromStorage, getRandomIntInclusive, makeLorem, animateCSS, debounce } from "./util.service.js";
 import { storageService } from "./async-storage.service.js";
 import { mockData } from "./mock-googleBooksService.js";
 const BOOKS_KEY = 'booksDB'
@@ -26,10 +26,10 @@ export const bookService = {
     removeReview,
     getGoogleBooks,
     getGoogleBook,
+    getFilterFromSearchParams,
 }
 
 function query(filterBy = {}) {
-    console.log('filterBy:', filterBy)
     return storageService.query(BOOKS_KEY)
         .then(books => {
             if (filterBy.txt) {
@@ -83,6 +83,15 @@ function getDefaultFilter() {
     }
 }
 
+function getFilterFromSearchParams(searchParam) {
+    const txt = searchParam.get('txt') || ''
+    const minPrice = searchParam.get('minPrice') || ''
+
+    return {
+        txt,
+        minPrice
+    }
+}
 
 function getEmptyReview() {
     return {
@@ -184,7 +193,7 @@ function getGoogleBook(googleBook) {
 
 function getGoogleBooks(searchTerm) {
     // const data = mockData.items
-    searchTerm = searchTerm || 'java'
+    // searchTerm = searchTerm || 'java'
     const url = `https://www.googleapis.com/books/v1/volumes?printType=books&q=effective%20${searchTerm}`
     return fetch(url)
         .then(res => res.json())

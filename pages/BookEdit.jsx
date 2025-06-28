@@ -27,7 +27,7 @@ export function BookEdit() {
 
         bookService.save(bookToEdit)
             .then(() => {
-                showSuccessMsg(`${bookToEdit.title} added successfully!`)
+                showSuccessMsg(`${bookToEdit.title} ${{bookId} ? 'edited' : 'added'} successfully!`)
                 navigate('/book')
             })
             .catch(err => {

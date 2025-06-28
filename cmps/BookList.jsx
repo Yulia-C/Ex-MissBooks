@@ -2,10 +2,10 @@ import { BookPreview } from "./BookPreview.jsx";
 // const { useEffect } = React
 const { Link, useLocation } = ReactRouterDOM
 
-export function BookList({ books, onRemoveBook, onAddBook}) {
+export function BookList({ books, onRemoveBook, onAddBook }) {
 
     const location = useLocation().pathname
-
+    
     return (
         <ul className="book-list container">
             {books.map(book =>
