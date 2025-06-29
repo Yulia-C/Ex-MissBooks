@@ -26,7 +26,7 @@ export function BookDetails({ onBack }) {
             .catch(err => {
                 console.log('err:', err)
             })
-            .finally(()=>setIsLoading(false))
+            .finally(() => setIsLoading(false))
     }
 
     function getPageCount(pageCount) {
@@ -127,8 +127,11 @@ export function BookDetails({ onBack }) {
                 {book.reviews && book.reviews.length > 0 ? (
                     <ul>
                         {book.reviews.map((review, idx) => (
-                            <li key={idx} className="review">
-                                <h4>Name: {review.fullname}</h4> <button onClick={() => onRemoveReview(book.id, review.id)}>x</button>
+                            <li key={idx} className="review clean-list">
+                                <section className="same-line">
+                                    <h4>Name: {review.fullname}</h4>
+                                    <button className="remove-btn" onClick={() => onRemoveReview(book.id, review.id)}>x</button>
+                                </section>
                                 <p>Date: {new Date(review.createdAt).toLocaleDateString('en-US', {
                                     year: 'numeric',
                                     month: '2-digit',
@@ -137,7 +140,7 @@ export function BookDetails({ onBack }) {
                                     minute: '2-digit',
                                     hour12: false,
                                 })}</p>
-                                <p>Rating: {'⭐'.repeat(review.rating)}</p>
+                                <p>Rating: {review.rating ? (review.rating) : 'No rating'}</p>
                             </li>
                         ))}
                     </ul>

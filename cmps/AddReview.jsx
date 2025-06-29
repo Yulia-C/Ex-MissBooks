@@ -1,14 +1,19 @@
 import { bookService } from "../services/book.service.js"
+import { RateByStars } from "./dynamic-inputs.jsx/RateByStars.jsx"
+import { RateBySelect } from "./dynamic-inputs.jsx/RateBySelect.jsx"
+import { RateByTxt } from "./dynamic-inputs.jsx/RateByTxt.jsx"
 
 const { useState, useEffect } = React
 const { useNavigate, useParams } = ReactRouterDOM
 
 export function AddReview({ onAddReview, resetForm }) {
+
     const { bookId } = useParams()
     const [review, setReview] = useState(bookService.getEmptyReview())
 
     useEffect(() => {
         setReview(bookService.getEmptyReview())
+        setReviewType("")
     }, [resetForm])
 
     function handleChange({ target }) {
@@ -28,31 +33,41 @@ export function AddReview({ onAddReview, resetForm }) {
         setReview(review => ({ ...review, [field]: value }))
     }
 
-    const { fullname, rating, createdAt } = review
+    const [reviewType, setReviewType] = useState("")
+
+    function onSetReviewType(value) {
+        setReviewType(value)
+        console.log('reviewType:', reviewType)
+    }
+
     return (
         <section className="add-review">
-            <form onSubmit={(ev) => {
-                ev.preventDefault()
-                onAddReview(review)
-            }}>
-                <h4>Add a review</h4>
-                <label htmlFor="fullname">Full name:
-                </label>
-                <input onChange={handleChange} value={fullname} name="fullname" id="fullname" type="text" />
+            <h4>Add a review by:</h4>
+            <div className="radio-btns">
 
-                <label htmlFor="date">Select date:</label>
-                <input onChange={handleChange} value={createdAt} type="datetime-local" id="date" name="createdAt" />
+            <label className="radio" htmlFor="selection">Selection
+            <input type="radio" id="selection" value="selection" checked={reviewType === "selection"} onChange={ev => onSetReviewType(ev.target.value)} />
+            </label>
+            <label className="radio" htmlFor="text" >By Text
+            <input type="radio" id="text" value="text" checked={reviewType === "text"} onChange={ev => onSetReviewType(ev.target.value)} />
+            </label>
+            <label className="radio" htmlFor="stars" >By Stars
+            <input type="radio" id="stars" value="stars" checked={reviewType === "stars"} onChange={ev => onSetReviewType(ev.target.value)} />
+            </label>
+            </div>
 
-                <label htmlFor="rating">Book Rating:</label>
-                <select onChange={handleChange} value={rating} className="rating" name="rating" id="rating">
-                    <option value="1">⭐</option>
-                    <option value="2">⭐⭐</option>
-                    <option value="3">⭐⭐⭐</option>
-                    <option value="4">⭐⭐⭐⭐</option>
-                    <option value="5">⭐⭐⭐⭐⭐</option>
-                </select>
-                <button>Submit review</button>
-            </form>
+            <DynamicCmp reviewType={reviewType} review={review} handleChange={handleChange} onAddReview={onAddReview} />
+
         </section>
+
     )
+}
+
+function DynamicCmp(props) {
+    const dynamicCmpMap = {
+        stars: <RateByStars {...props} />,
+        text: <RateByTxt {...props} />,
+        selection: < RateBySelect {...props} />
+    }
+    return dynamicCmpMap[props.reviewType]
 }

@@ -59,3 +59,15 @@ img.sale {
     align-items: center;
     padding-inline: 1.5em;
 }
+
+.review {
+    background-color: var(--clr1bg);
+    padding:.5rem .5rem .5rem 1rem;
+    border-radius: 5px;
+}
+
+.same-line {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

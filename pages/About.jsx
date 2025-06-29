@@ -1,6 +1,6 @@
 import { LongTxt } from "../cmps/LongTxt.jsx"
 
-
+const { useState } = React
 const { Outlet, Link, NavLink } = ReactRouterDOM
 
 export function About() {
@@ -12,10 +12,16 @@ export function About() {
     television was as generally It tuned as generally was All a pleasure
     to a different story was was in such cases the port the story it`
 
+    const [cmpType, setCmpType] = useState()
+
+    function handleGreetClick({ target }) {
+        console.log(`${value} Click!`)
+    }
     return (
         <section className="about container">
             <h1>About Miss Books...</h1>
             <LongTxt txt={txt} />
+
             <nav>
                 <NavLink className="team" to="/about/team" >About Our Team </NavLink>
                 <NavLink className="goal" to="/about/goal" >About Our Goal</NavLink>
